@@ -1,9 +1,13 @@
-# Getting Started
+# LPay：支付开发组件（订单模块半成品）
 
-### Reference Documentation
-For further reference, please consider the following sections:
+### Instructions
+* 用于支付开发
+* 自定义多种订单
+* 结合websocket 回调通知前端跳转页面
+* 商家账户参数动态配置（无需再项目中配置）
+* 自带挂单工具（如：15分钟不支付可取消订单）
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.7.0/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.7.0/maven-plugin/reference/html/#build-image)
-
+### Support
+* 微信 NATIVE/JSAPI
+* 支付宝 PC网站
+* 建行聚合支付
