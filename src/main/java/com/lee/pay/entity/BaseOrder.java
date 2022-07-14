@@ -14,4 +14,6 @@ public class BaseOrder {
     public BigDecimal realAmount;
 
     public String payMethod;
+
+    public Integer state;
 }
