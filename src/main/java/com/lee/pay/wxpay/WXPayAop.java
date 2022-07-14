@@ -327,8 +327,9 @@ public class WXPayAop extends BasePayAopImpl {
             requestData.put("refundFee", refund_fee / 100);
             requestData.put("outTradeNo", outTradeNo);
             requestData.put("code", 200);
+            return requestData;
         }
-        return requestData;
+        throw new MyPaymentException("退款失败：" + resultMap.get("err_code_des"));
     }
 
 
