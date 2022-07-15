@@ -1,24 +1,22 @@
 package com.lee.project;
 
+
 import com.lee.pay.entity.ResponseResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MeetingOrderController {
+public class TestOrderController {
 
-    private final MeetingOrderService meetingOrderService;
+    private final TestOrderServiceImpl testOrderService;
 
-    public MeetingOrderController(MeetingOrderService meetingOrderService) {
-        this.meetingOrderService = meetingOrderService;
+    public TestOrderController(TestOrderServiceImpl testOrderService) {
+        this.testOrderService = testOrderService;
     }
-
 
     @PostMapping("/create")
     public ResponseResult<?> create(@RequestBody BasePayParams payParams) {
-        return new ResponseResult<>().success(meetingOrderService.invokePayOrder(payParams));
+        return new ResponseResult<>().success(testOrderService.invokeOrderPay(payParams));
     }
-
-
 }

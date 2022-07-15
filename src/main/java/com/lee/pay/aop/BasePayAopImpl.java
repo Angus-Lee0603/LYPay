@@ -9,6 +9,7 @@ import com.lee.pay.utils.orderUtil.OrderTypeImporter;
 import com.lee.pay.utils.redis.PayRedisUtil;
 import com.lee.pay.utils.websocket.service.WebSocketService;
 import com.lee.pay.exception.MyPaymentException;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -90,10 +91,13 @@ public class BasePayAopImpl implements IBasePayAop {
 
         if (o == null) {
             List<Map<String, Object>> res
-                    = rawSqlMapper.rawSelect("select * from pay_config where config_type = " + payConfig);
+                    = rawSqlMapper.rawSelect("select * from pay_config where config_type = '" + payConfig + "'");
             if (res.size() == 0)
                 return null;
-            return JSONObject.parseObject(JSON.toJSONString(res.get(0)), clazz);
+            String jsonString = JSON.toJSONString(res.get(0)).replace("\\", "").replace("\"{", "{").replace("}\"", "}");
+            E config = JSON.parseObject(jsonString, clazz);
+            payRedisUtil.set("payConfig:" + payConfig, config);
+            return config;
         }
         return (E) o;
 

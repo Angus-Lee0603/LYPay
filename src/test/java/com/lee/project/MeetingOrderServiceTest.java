@@ -14,8 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 class MeetingOrderServiceTest {
 
-    @Autowired
-    private MeetingOrderService meetingOrderService;
+
 
     @Test
     void payOrderAction() {
@@ -27,6 +26,6 @@ class MeetingOrderServiceTest {
                 .userId("1")
                 .userPhone("13029835033")
                 .build();
-        meetingOrderService.invokePayOrder(payParams);
+
     }
 }

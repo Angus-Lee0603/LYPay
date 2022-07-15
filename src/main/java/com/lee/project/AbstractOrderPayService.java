@@ -8,15 +8,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.aop.framework.AopContext;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Slf4j
 public abstract class AbstractOrderPayService<T> {
     //todo:注入订单service
     private final OrderUtil orderUtil;
+    private final AllOrderService allOrderService;
 
-    public AbstractOrderPayService(OrderUtil orderUtil) {
+    public AbstractOrderPayService(OrderUtil orderUtil, AllOrderService allOrderService) {
         this.orderUtil = orderUtil;
+        this.allOrderService = allOrderService;
     }
 
 
@@ -54,11 +57,18 @@ public abstract class AbstractOrderPayService<T> {
         if (StringUtils.isBlank(amount))
             amount = "商品表中商品价格";
 
+        TestOrder order = TestOrder.builder()
+                .orderId(outTradeNo)
+                .payMethod(payMethod.value)
+                .realAmount(new BigDecimal(amount))
+                .userId(userId).build();
+        allOrderService.getTestOrderService().save(order);
+
         //构建 itrOrderId
         String itrOrderId = "order:" + OrderType.forValue(orderType.code).name + ":" + outTradeNo;
 
         //允许挂单，几分钟内未付费则取消
-        orderUtil.pendingOrderToDelay(itrOrderId, null, orderType.pendingTime);
+        orderUtil.pendingOrderToDelay(itrOrderId, order, orderType.pendingTime);
 
         return payOrderAction(payMethod, orderFrom, outTradeNo, subject, amount, userId, redirect, orderType);
     }
@@ -70,7 +80,7 @@ public abstract class AbstractOrderPayService<T> {
         //订单状态改为已支付
 
         //从延迟队列中移除对应订单
-        String delOrderId = "order:" + OrderType.GOODS.name + ":" + orderTradeNo;
+        String delOrderId = "order:" + OrderType.TESTORDER.name + ":" + orderTradeNo;
         orderUtil.removeOrderFromDelay(delOrderId);
         return true;
     }

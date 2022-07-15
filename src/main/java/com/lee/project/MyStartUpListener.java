@@ -7,9 +7,11 @@ import com.lee.pay.utils.orderUtil.OrderTypeImporter;
 import com.lee.pay.utils.orderUtil.listener.StartupListener;
 import com.lee.pay.utils.orderUtil.service.DelayService;
 import com.lee.pay.utils.orderUtil.service.OrderRedisService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class MyStartUpListener extends StartupListener {
 
     private final RawSqlMapper mapper;
@@ -35,6 +37,7 @@ public class MyStartUpListener extends StartupListener {
      */
     @Override
     protected void orderWithdrawAction(String orderId) {
+
         Integer type = Integer.parseInt(orderId.substring(orderId.length() - 1));
         OrderType orderType = OrderType.typesByValue.get(type);
         String tableName = orderType.tableName;
@@ -42,6 +45,8 @@ public class MyStartUpListener extends StartupListener {
         //设置取消 code（可自定义）
         int cancelCode = -1;
         //取消订单
-        mapper.rawUpdate("update " + tableName + " set state=" + cancelCode + "where orderId =" + orderId);
+        mapper.rawUpdate(
+                "update " + tableName + " set state=" + cancelCode + " where order_id = '" + orderId + "'"
+        );
     }
 }

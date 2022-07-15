@@ -232,6 +232,13 @@
 
     <build>
         <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>com/lee/pay/utils/crud/mapper/xml/*.xml</include>
+                    <include>com/lee/project/*.xml</include>
+                </includes>
+            </resource>
             <!--打包第三方jar包-->
             <resource>
                 <directory>lib</directory>

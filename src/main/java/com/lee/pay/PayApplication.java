@@ -13,7 +13,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAspectJAutoProxy(exposeProxy = true)
 @MapperScan(basePackages = {
         "com.lee.pay.config.mapper",
-        "com.lee.pay.utils.crud.mapper"
+        "com.lee.pay.utils.crud.mapper",
+        "com.lee.project"
 })
 public class PayApplication {
 

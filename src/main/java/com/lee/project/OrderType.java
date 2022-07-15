@@ -32,6 +32,5 @@ public class OrderType extends AbstractOrderType {
     }
 
 
-    public static final OrderType GOODS = new OrderType("GOODS", 1, "订单", "goods", 15);
-
+    public static final OrderType TESTORDER = new OrderType("TESTORDER", 1, "测试订单", "test_order", 1);
 }

@@ -13,7 +13,7 @@ spring:
 #    password: root@lee@redis
 
 mybatis-plus:
-  mapper-locations: "classpath*:/com/lee/pay/config/mapper/xml/*.xml,/com/lee/pay/utils/crud/mapper/xml/*.xml"
+  mapper-locations: classpath*:/com/lee/pay/config/mapper/xml/*.xml,classpath*:/com/lee/pay/utils/crud/mapper/xml/*.xml,classpath*:/com/lee/project/*.xml
   type-handlers-package: com.lee.pay.config
   global-config:
     db-config:
