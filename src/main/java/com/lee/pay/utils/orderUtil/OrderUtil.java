@@ -43,7 +43,20 @@ public class OrderUtil {
     public String generateOutTradeNo(String userPhone4, Integer orderType) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String date = formatter.format(new Date());
-        return Math.abs(UUID.randomUUID().toString().hashCode()) + date + userPhone4 + orderType;
+        String randomStr;
+        Random random = new Random();
+        String randomStr1 = String.valueOf(Math.abs(UUID.randomUUID().toString().hashCode()));
+        if (randomStr1.length() > 9) {
+            randomStr = randomStr1.substring(0, 9);
+        } else if (randomStr1.length() < 9) {
+            randomStr = randomStr1 + random.nextInt(10);
+        }else {
+            randomStr = randomStr1;
+        }
+
+
+        return randomStr + date + userPhone4 + orderType;
+
     }
 
 
@@ -107,16 +120,15 @@ public class OrderUtil {
     }
 
 
-    private void orderInputDelayQueue(String itrOrderId, BaseOrder order, Integer minute) {
+    private void orderInputDelayQueue(String itrOrderId, BaseOrder order, Integer seconds) {
 
         ThreadPoolUtils.execute(() -> {
             //1 插入到待付款队列
-            DshOrder dshOrder = new DshOrder(itrOrderId, minute);
             log.info("订单：" + itrOrderId + " " + "插入队列");
+            DshOrder dshOrder = new DshOrder(itrOrderId, seconds);
             delayService.add(dshOrder);
             //2插入到redis(保险），防止待付款期间服务器宕机，延迟队列数据丢失
-            orderRedisService.saveOrder(itrOrderId, order, minute);
-            log.info("订单：" + itrOrderId + "插入redis");
+            orderRedisService.saveOrder(itrOrderId, order, seconds);
         });
     }
 
@@ -127,9 +139,7 @@ public class OrderUtil {
 
         if (surpsTime <= 0) {
             delayService.remove(delOrderId);
-            log.info("订单手动出队：" + delOrderId);
             orderRedisService.deleteOrder(delOrderId);
-            log.info("订单手动出redis：" + delOrderId);
         }
     }
 

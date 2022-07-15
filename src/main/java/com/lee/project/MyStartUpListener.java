@@ -1,7 +1,6 @@
 package com.lee.project;
 
 
-import com.lee.pay.entity.AbstractOrderType;
 import com.lee.pay.utils.crud.mapper.RawSqlMapper;
 import com.lee.pay.utils.orderUtil.OrderTypeImporter;
 import com.lee.pay.utils.orderUtil.listener.StartupListener;

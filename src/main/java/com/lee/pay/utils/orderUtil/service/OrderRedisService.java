@@ -13,7 +13,7 @@ public interface OrderRedisService {
      *
      * @param orderId     订单id
      * @param orderObject 订单对象
-     * @param time 过期时间（分钟）
+     * @param time 过期时间（s）
      */
     void saveOrder(String orderId, BaseOrder orderObject, Integer time);
  

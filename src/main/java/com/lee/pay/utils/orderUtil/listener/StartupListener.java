@@ -36,21 +36,21 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
                 ThreadPoolUtils.execute(new Runnable() {
                     @Override
                     public void run() {
-                        String orderId = order.getOrderId();
+                        String itrOrderId = order.getOrderId();
                         //查库判断是否需要自动取消订单
-                        int surpsTime = redisService.getSurplusTime(orderId).intValue();
-                        log.info("redis键:" + orderId + ";剩余过期时间:" + surpsTime);
+                        int surpsTime = redisService.getSurplusTime(itrOrderId).intValue();
+                        log.info("redis键: " + itrOrderId + " 剩余过期时间:" + surpsTime);
                         if (surpsTime > 0) {
                             log.info("没有需要取消的订单!");
                         } else {
-                            log.info("自动取消订单，删除队列:" + orderId);
+                            log.info("自动取消订单，删除队列:" + itrOrderId);
                             //从队列中删除
-                            delayService.remove(orderId);
+                            delayService.remove(itrOrderId);
                             //从redis删除
-                            redisService.deleteOrder("order" + orderId);
-                            log.info("自动取消订单，删除redis：" + orderId);
+                            redisService.deleteOrder(itrOrderId);
                             //对订单进行取消订单操作 修改订单状态
-                           orderWithdrawAction(orderId);
+                            String orderId = itrOrderId.substring(itrOrderId.lastIndexOf(":") + 1);
+                            orderWithdrawAction(orderId);
 
                         }
                     }
@@ -69,15 +69,21 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
                 log.info("需要入队的订单keys：" + keys);
                 log.info("写到DelayQueue");
                 for (String key : keys) {
-                    String orderKey = redisService.getOrder(key);
-                    int surpsTime = redisService.getSurplusTime(key).intValue();
-                    log.info("读redis，key：" + key);
-                    log.info("redis键:" + key + ";剩余过期时间:" + surpsTime);
-                    if (orderKey != null) {
-                        DshOrder dshOrder = new DshOrder(orderKey, surpsTime);
-                        delayService.add(dshOrder);
-                        log.info("订单自动入队：" + dshOrder);
-                    }
+                    ThreadPoolUtils.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            String orderKey = redisService.getOrder(key);
+                            int surpsTime = redisService.getSurplusTime(key).intValue();
+                            log.info("读redis，key：" + key);
+                            log.info("redis键:" + key + ";剩余过期时间:" + surpsTime);
+                            if (orderKey != null) {
+                                DshOrder dshOrder = new DshOrder(orderKey, surpsTime);
+                                delayService.add(dshOrder);
+                                log.info("订单自动入队：" + dshOrder);
+                            }
+                        }
+                    });
+
                 }
             }
         });

@@ -18,11 +18,11 @@ public class DshOrder implements Delayed {
 
     /**
      * orderId:订单id
-     * timeout：自动取消订单的超时时间，分钟
+     * timeout：自动取消订单的超时时间，秒
      */
     public DshOrder(String orderId, int timeout) {
         this.orderId = orderId;
-        this.startTime = System.currentTimeMillis() + timeout * 60 * 1000L;
+        this.startTime = System.currentTimeMillis() + timeout * 1000L;
     }
 
     @Override

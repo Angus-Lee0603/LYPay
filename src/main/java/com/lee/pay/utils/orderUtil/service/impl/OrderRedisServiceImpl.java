@@ -39,10 +39,9 @@ public class OrderRedisServiceImpl implements OrderRedisService {
     @Override
     public void saveOrder(String outTradeId, BaseOrder redisDo, Integer time) {
         String key = outTradeId;
-        redisTemplate.opsForValue().set(key, JSON.toJSONString(redisDo), time, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(key, JSON.toJSONString(redisDo), time, TimeUnit.SECONDS);
         //加入队列
-
-        delayService.add(new DshOrder(redisDo.getOrderId(), time));
+//        delayService.add(new DshOrder(redisDo.getOrderId(), time));
     }
 
     /**
