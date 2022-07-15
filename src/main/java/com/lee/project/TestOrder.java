@@ -18,15 +18,15 @@ public class TestOrder extends BaseOrder implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    public Integer id;
+    private Integer id;
 
-    public String orderId;
+    private String orderId;
 
-    public String userId;
+    private String userId;
 
-    public BigDecimal realAmount;
+    private BigDecimal realAmount;
 
-    public String payMethod;
+    private String payMethod;
 
-    public Integer state;
+    private Integer state;
 }

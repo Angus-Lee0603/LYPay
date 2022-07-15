@@ -62,7 +62,6 @@ public class TestOrderServiceImpl extends ServiceImpl<TestOrderMapper, TestOrder
             switch (method) {
                 case WX_PAY:
                     if (orderFrom == 1) {
-
                         return (Map<String, String>) getService().wxPayCharge2(outTradeNo, totalAmount, orderSubject, orderType, userId);
                     }
                     return (Map<String, String>) getService().wxPayCharge1(outTradeNo, totalAmount, orderSubject, orderType);
@@ -88,7 +87,7 @@ public class TestOrderServiceImpl extends ServiceImpl<TestOrderMapper, TestOrder
 
         @WXPayCallback
         public Object wxPayCallBack(Map<String, String> params) {
-            return null;
+            return orderPayCallbackAction(params);
         }
 
 
@@ -112,6 +111,7 @@ public class TestOrderServiceImpl extends ServiceImpl<TestOrderMapper, TestOrder
             //从延迟队列中移除对应订单
             String delOrderId = "order:" + OrderType.TESTORDER.name + ":" + orderTradeNo;
             orderUtil.removeOrderFromDelay(delOrderId);
+
             return true;
         }
 
