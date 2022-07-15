@@ -1,6 +1,5 @@
 package com.lee.pay.utils.orderUtil.listener;
 
-
 import com.lee.pay.utils.orderUtil.OrderTypeImporter;
 import com.lee.pay.utils.orderUtil.ThreadPoolUtils;
 import com.lee.pay.utils.orderUtil.service.DelayService;
@@ -67,14 +66,12 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
                     return;
                 }
                 log.info("需要入队的订单keys：" + keys);
-                log.info("写到DelayQueue");
                 for (String key : keys) {
                     ThreadPoolUtils.execute(new Runnable() {
                         @Override
                         public void run() {
                             String orderKey = redisService.getOrder(key);
                             int surpsTime = redisService.getSurplusTime(key).intValue();
-                            log.info("读redis，key：" + key);
                             log.info("redis键:" + key + ";剩余过期时间:" + surpsTime);
                             if (orderKey != null) {
                                 DshOrder dshOrder = new DshOrder(orderKey, surpsTime);

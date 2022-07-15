@@ -15,11 +15,9 @@ import java.util.*;
 public abstract class AbstractOrderPayService<T> {
     //todo:注入订单service
     private final OrderUtil orderUtil;
-    private final AllOrderService allOrderService;
 
-    public AbstractOrderPayService(OrderUtil orderUtil, AllOrderService allOrderService) {
+    public AbstractOrderPayService(OrderUtil orderUtil) {
         this.orderUtil = orderUtil;
-        this.allOrderService = allOrderService;
     }
 
 
@@ -27,6 +25,10 @@ public abstract class AbstractOrderPayService<T> {
                                                           String orderSubject, String totalAmount,
                                                           String userId, String redirectUrl, OrderType orderType);
 
+    @SuppressWarnings("unchecked")
+    protected T getService() {
+        return (T) AopContext.currentProxy();
+    }
 
     public Map<String, String> invokePayOrder(BasePayParams payParams) throws MyPaymentException {
         PayMethod payMethod = payParams.getPayMethod();
@@ -57,37 +59,7 @@ public abstract class AbstractOrderPayService<T> {
         if (StringUtils.isBlank(amount))
             amount = "商品表中商品价格";
 
-        TestOrder order = TestOrder.builder()
-                .orderId(outTradeNo)
-                .payMethod(payMethod.value)
-                .realAmount(new BigDecimal(amount))
-                .userId(userId).build();
-        allOrderService.getTestOrderService().save(order);
-
-        //构建 itrOrderId
-        String itrOrderId = "order:" + OrderType.forValue(orderType.code).name + ":" + outTradeNo;
-
-        //允许挂单，几分钟内未付费则取消
-        orderUtil.pendingOrderToDelay(itrOrderId, order, orderType.pendingTime);
-
         return payOrderAction(payMethod, orderFrom, outTradeNo, subject, amount, userId, redirect, orderType);
-    }
-
-
-    public Object OrderPayCallbackAction(Map<String, String> params) {
-        //此时
-        String orderTradeNo = params.get("out_trade_no");
-        //订单状态改为已支付
-
-        //从延迟队列中移除对应订单
-        String delOrderId = "order:" + OrderType.TESTORDER.name + ":" + orderTradeNo;
-        orderUtil.removeOrderFromDelay(delOrderId);
-        return true;
-    }
-
-    @SuppressWarnings("unchecked")
-    protected T getService() {
-        return (T) AopContext.currentProxy();
     }
 
 
