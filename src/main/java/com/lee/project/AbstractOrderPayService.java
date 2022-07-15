@@ -8,12 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.aop.framework.AopContext;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @Slf4j
 public abstract class AbstractOrderPayService<T> {
-    //todo:注入订单service
+
     private final OrderUtil orderUtil;
 
     public AbstractOrderPayService(OrderUtil orderUtil) {
@@ -40,7 +39,7 @@ public abstract class AbstractOrderPayService<T> {
         String userPhone = payParams.getUserPhone();
         String outTradeNo;
         String phone4 = userPhone.substring(userPhone.length() - 4);
-        //创建系统订单：
+
         //创建系统订单号
         switch (payMethod) {
             case WX_PAY:
