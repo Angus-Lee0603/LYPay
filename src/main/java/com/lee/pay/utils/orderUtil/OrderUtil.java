@@ -50,7 +50,7 @@ public class OrderUtil {
             randomStr = randomStr1.substring(0, 9);
         } else if (randomStr1.length() < 9) {
             randomStr = randomStr1 + random.nextInt(10);
-        }else {
+        } else {
             randomStr = randomStr1;
         }
 
@@ -133,14 +133,9 @@ public class OrderUtil {
     }
 
     private void orderOutputDelayQueue(String delOrderId) {
-
-        int surpsTime = orderRedisService.getSurplusTime(delOrderId).intValue();
-        log.error("redis键:" + delOrderId + ";剩余过期时间:" + surpsTime);
-
-        if (surpsTime <= 0) {
-            delayService.remove(delOrderId);
-            orderRedisService.deleteOrder(delOrderId);
-        }
+        log.info("将订单：" + delOrderId + "从队列中移除");
+        delayService.remove(delOrderId);
+        orderRedisService.deleteOrder(delOrderId);
     }
 
 

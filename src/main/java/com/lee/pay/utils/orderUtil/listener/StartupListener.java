@@ -42,9 +42,9 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
                         if (surpsTime > 0) {
                             log.info("没有需要取消的订单!");
                         } else {
-                            log.info("自动取消订单，删除队列:" + itrOrderId);
                             //从队列中删除
                             delayService.remove(itrOrderId);
+                            log.info("自动取消订单，删除队列:" + itrOrderId);
                             //从redis删除
                             redisService.deleteOrder(itrOrderId);
                             //对订单进行取消订单操作 修改订单状态

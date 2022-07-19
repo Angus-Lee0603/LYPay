@@ -119,6 +119,7 @@ public class WXPayAop extends BasePayAopImpl {
             data.put("body", body);//商品详情
             data.put("mch_id", mchId);//商户号
             data.put("nonce_str", WXPayUtil.generateNonceStr());//32位字符串
+            log.info("notify_url is {}", notifyUrl);
             data.put("notify_url", notifyUrl); //异步通知地址
             data.put("out_trade_no", outTradeNo);//订单号
             data.put("spbill_create_ip", IPUtil.getIpAddr(getRequest()));//用户终端IP
@@ -165,6 +166,7 @@ public class WXPayAop extends BasePayAopImpl {
             data.put("body", body);//商品详情
             data.put("mch_id", mchId);//商户号
             data.put("nonce_str", WXPayUtil.generateNonceStr());//32位字符串
+            log.info("notify_url is {}", notifyUrl);
             data.put("notify_url", notifyUrl);//异步通知地址
             data.put("openid", openId);
             data.put("out_trade_no", outTradeNo);//订单号

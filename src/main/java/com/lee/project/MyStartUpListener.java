@@ -9,8 +9,8 @@ import com.lee.pay.utils.orderUtil.service.OrderRedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-@Component
 @Slf4j
+@Component
 public class MyStartUpListener extends StartupListener {
 
     private final RawSqlMapper mapper;
@@ -49,3 +49,4 @@ public class MyStartUpListener extends StartupListener {
         );
     }
 }
+

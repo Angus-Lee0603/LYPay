@@ -39,7 +39,7 @@ public class TestOrderServiceImpl extends ServiceImpl<TestOrderMapper, TestOrder
         }
 
         @Override
-        @SuppressWarnings("unchecked")
+//        @SuppressWarnings("unchecked")
         protected Map<String, String> payOrderAction(PayMethod method, Integer orderFrom, String outTradeNo,
                                                      String orderSubject, String totalAmount,
                                                      String userId, String redirectUrl, OrderType orderType) {
