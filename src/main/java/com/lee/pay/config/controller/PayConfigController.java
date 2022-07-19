@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin({"*"})
 @RestController
-@RequestMapping("/payConfig")
 @Api(tags = "支付配置")
 public class PayConfigController {
 
@@ -21,16 +20,21 @@ public class PayConfigController {
         this.payConfigService = payConfigService;
     }
 
-    @PostMapping("/set")
+    @PostMapping("/payConfig/set")
     @ApiOperation(value = "设置并保存")
     public ResponseResult<?> setConfig2(@RequestBody JsonBody body) {
         return new ResponseResult<>().success(payConfigService.setConfig(body.getPayMethod(), body.getPayConfig()));
     }
 
-    @GetMapping("/query")
+    @GetMapping("/payConfig")
     @ApiOperation(value = "查询")
     public ResponseResult<?> queryConfig(@RequestParam PayMethod payMethod) {
         return new ResponseResult<>().success(payConfigService.queryPayConfig(payMethod.configClass));
+    }
+    @GetMapping("/payConfigs")
+    @ApiOperation(value = "查询")
+    public ResponseResult<?> queryConfigs() {
+        return new ResponseResult<>().success(payConfigService.queryPayConfigs());
     }
 
 

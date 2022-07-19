@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.lee.pay.annotaion.NotAllEmpty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -14,11 +16,13 @@ import lombok.Data;
 @Data
 @TableName(autoResultMap = true)
 @ApiModel("通用支付配置")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PayConfig {
 
 
     @TableId(value = "id", type = IdType.AUTO)
     @ApiModelProperty(hidden = true)
+    @JsonIgnore
     private Integer id;
 
     private String configType;
