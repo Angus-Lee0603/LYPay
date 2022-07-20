@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin({"*"})
 @RestController
 @Api(tags = "支付配置")
+//todo:需要将此加入权限
 public class PayConfigController {
 
     private final IPayConfigService payConfigService;
