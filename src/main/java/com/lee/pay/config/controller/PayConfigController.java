@@ -23,9 +23,8 @@ public class PayConfigController {
     @PostMapping("/payConfig")
     @ApiOperation(value = "设置并保存")
     public ResponseResult<?> setConfig2(@RequestBody JsonBody body) {
-//        return new ResponseResult<>().success(payConfigService.setConfig(body.getPayMethod(), body.getPayConfig()));
+        return new ResponseResult<>().success(payConfigService.setConfig(body.getPayMethod(), body.getPayConfig()));
 
-        return  new ResponseResult<>().success(body);
     }
 
     @GetMapping("/payConfig/{payMethod}")
