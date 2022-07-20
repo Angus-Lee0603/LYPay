@@ -20,18 +20,20 @@ public class PayConfigController {
         this.payConfigService = payConfigService;
     }
 
-    @PostMapping("/payConfig/set")
+    @PostMapping("/payConfig")
     @ApiOperation(value = "设置并保存")
     public ResponseResult<?> setConfig2(@RequestBody JsonBody body) {
-        return new ResponseResult<>().success(payConfigService.setConfig(body.getPayMethod(), body.getPayConfig()));
+//        return new ResponseResult<>().success(payConfigService.setConfig(body.getPayMethod(), body.getPayConfig()));
+
+        return  new ResponseResult<>().success(body);
     }
 
-    @GetMapping("/payConfig")
+    @GetMapping("/payConfig/{payMethod}")
     @ApiOperation(value = "查询")
-    public ResponseResult<?> queryConfig(@RequestParam PayMethod payMethod) {
+    public ResponseResult<?> queryConfig(@PathVariable("payMethod") PayMethod payMethod) {
         return new ResponseResult<>().success(payConfigService.queryPayConfig(payMethod.configClass));
     }
-    @GetMapping("/payConfigs")
+    @GetMapping("/payConfig")
     @ApiOperation(value = "查询")
     public ResponseResult<?> queryConfigs() {
         return new ResponseResult<>().success(payConfigService.queryPayConfigs());
