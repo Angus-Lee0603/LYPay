@@ -32,6 +32,7 @@ public class PayConfigController {
     public ResponseResult<?> queryConfig(@PathVariable("payMethod") PayMethod payMethod) {
         return new ResponseResult<>().success(payConfigService.queryPayConfig(payMethod.configClass));
     }
+
     @GetMapping("/payConfig")
     @ApiOperation(value = "查询")
     public ResponseResult<?> queryConfigs() {
