@@ -5,6 +5,7 @@ import com.lee.pay.alipay.annotation.AliPayCallBack;
 import com.lee.pay.alipay.annotation.AliPayCharge;
 import com.lee.pay.entity.AbstractOrderType;
 import com.lee.pay.enums.PayMethod;
+import com.lee.pay.exception.MyPaymentException;
 import com.lee.pay.utils.orderUtil.OrderUtil;
 import com.lee.pay.wxpay.annotation.WXPayCallback;
 import com.lee.pay.wxpay.annotation.WXPayCharge;
@@ -39,7 +40,7 @@ public class TestOrderServiceImpl extends ServiceImpl<TestOrderMapper, TestOrder
         }
 
         @Override
-//        @SuppressWarnings("unchecked")
+        @SuppressWarnings("unchecked")
         protected Map<String, String> payOrderAction(PayMethod method, Integer orderFrom, String outTradeNo,
                                                      String orderSubject, String totalAmount,
                                                      String userId, String redirectUrl, OrderType orderType) {
@@ -67,9 +68,10 @@ public class TestOrderServiceImpl extends ServiceImpl<TestOrderMapper, TestOrder
                     return (Map<String, String>) getService().wxPayCharge1(outTradeNo, totalAmount, orderSubject, orderType);
                 case ALI_PAY:
                     return (Map<String, String>) getService().aliPayCharge(outTradeNo, totalAmount, orderSubject, redirectUrl, orderType);
+                default:
+                    throw new MyPaymentException("暂不支持此支付方式");
 
             }
-            return null;
         }
 
 

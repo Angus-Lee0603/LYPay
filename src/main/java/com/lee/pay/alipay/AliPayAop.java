@@ -27,11 +27,16 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Administrator
+ */
 @Slf4j
 @Aspect
 @Component
 public class AliPayAop extends BasePayAopImpl {
-    // 应用ID
+    /**
+     * 应用ID
+     */
     private String appId;
     // 商户私钥，您的PKCS8格式RSA2私钥
     private String rsa2PrivateKey;
@@ -119,7 +124,7 @@ public class AliPayAop extends BasePayAopImpl {
     }
 
     @Around(value = "callback()")
-    public Object aroundCallback(ProceedingJoinPoint joinPoint){
+    public Object aroundCallback(ProceedingJoinPoint joinPoint) {
 
         Object[] args = joinPoint.getArgs();
 
@@ -135,8 +140,9 @@ public class AliPayAop extends BasePayAopImpl {
                 valueStr = (i == values.length - 1) ? valueStr + values[i]
                         : valueStr + values[i] + ",";
             }
-            //乱码解决，这段代码在出现乱码时使用
-//            valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+            /*乱码解决，这段代码在出现乱码时使用
+          valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+*/
             params.put(name, valueStr);
         }
         //验签
@@ -154,7 +160,8 @@ public class AliPayAop extends BasePayAopImpl {
 	3、校验通知中的seller_id（或者seller_email) 是否为out_trade_no这笔单据的对应的操作方（有的时候，一个商户可能有多个seller_id/seller_email）
 	4、验证app_id是否为该商户本身。
 	*/
-        if (signVerified) {//验证成功
+        if (signVerified) {
+            //验证成功
             //商户订单号
             String outTradeNo = params.get("out_trade_no");
             //交易状态
@@ -174,9 +181,9 @@ public class AliPayAop extends BasePayAopImpl {
                 res.put("payMethod", PayMethod.ALI_PAY.value);
                 //支付宝有自动跳转，好像只要通知管理后台
                 wsSendMessage(getUser(outTradeNo), res.toJSONString());
-//                websocketService.multiCast("payment","支付宝到账");
-                //业务处理
+
                 try {
+                    //业务处理
                     //构造参数
                     args[0] = params;
                     //切点方法执行
@@ -213,8 +220,8 @@ public class AliPayAop extends BasePayAopImpl {
 
         //获得初始化的AlipayClient
         // 支付宝网关
-        String GATEWAY_URL = "https://openapi.alipay.com/gateway.do";
-        AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY_URL, appId, rsa2PrivateKey, "json", charset,
+        String gatewayUrl = "https://openapi.alipay.com/gateway.do";
+        AlipayClient alipayClient = new DefaultAlipayClient(gatewayUrl, appId, rsa2PrivateKey, "json", charset,
                 aliPayPublicKey, signType);
         AlipayTradeFastpayRefundQueryRequest request = new AlipayTradeFastpayRefundQueryRequest();
 
@@ -227,7 +234,7 @@ public class AliPayAop extends BasePayAopImpl {
         if (response.isSuccess()) {
             log.info("支付宝退款调用成功");
             JSONObject res = new JSONObject();
-            if (response.getRefundStatus().equals("REFUND_SUCCESS")) {
+            if ("REFUND_SUCCESS".equals(response.getRefundStatus())) {
                 log.info("退款已经到账:" + refundMoney);
                 res.put("refund_fee", response.getRefundAmount());
                 res.put("out_trade_no", outTradeNo);
@@ -245,8 +252,9 @@ public class AliPayAop extends BasePayAopImpl {
 
     private void setOrUpdate(AbstractOrderType orderType) {
         AliPayConfig config = getPayConfig(AliPayConfig.class);
-        if (config == null)
+        if (config == null) {
             throw new MyPaymentException("商家微信账户参数未配置");
+        }
         this.appId = config.getAppId();
         this.rsa2PrivateKey = config.getRsa2PrivateKey();
         this.aliPayPublicKey = config.getAliPayPublicKey();

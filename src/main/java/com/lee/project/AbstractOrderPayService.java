@@ -55,8 +55,9 @@ public abstract class AbstractOrderPayService<T> {
 
         //创建相应订单
         String subject = "测试";
-        if (StringUtils.isBlank(amount))
+        if (StringUtils.isBlank(amount)) {
             amount = "商品表中商品价格";
+        }
 
         return payOrderAction(payMethod, orderFrom, outTradeNo, subject, amount, userId, redirect, orderType);
     }

@@ -4,13 +4,19 @@ server:
   port: 8086
 spring:
   datasource:
-    url: jdbc:mysql://192.168.1.77:3307/pay?characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://119.3.235.38:3307/pay?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: root1234
+    druid: #druid 连接池配置
+      initial-size: 1       #初始化连接池大小
+      min-idle: 1           #最小连接数
+      max-active: 60        #最大连接数
+      max-lifetime=: 120000
   redis:
-    host: 192.168.1.77
-    port: 6379
-#    password: root@lee@redis
+    host: 119.3.235.38
+    port: 7379
+    password: root@lee@redis
 
 mybatis-plus:
   mapper-locations: classpath*:/com/lee/pay/config/mapper/xml/*.xml,classpath*:/com/lee/pay/utils/crud/mapper/xml/*.xml,classpath*:/com/lee/project/*.xml

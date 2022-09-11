@@ -9,7 +9,6 @@ import com.lee.pay.utils.orderUtil.OrderTypeImporter;
 import com.lee.pay.utils.redis.PayRedisUtil;
 import com.lee.pay.utils.websocket.service.WebSocketService;
 import com.lee.pay.exception.MyPaymentException;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -48,15 +47,16 @@ public class BasePayAopImpl implements IBasePayAop {
     public BaseOrder getOrder(String outTradeNo) {
         Integer type = Integer.parseInt(outTradeNo.substring(outTradeNo.length() - 1));
 
-        Map<Integer, AbstractOrderType> orderTypeMap = OrderTypeImporter.getMap();
+        Map<Integer, AbstractOrderType> orderTypeMap = OrderTypeImporter.getMAP();
         AbstractOrderType orderType = orderTypeMap.get(type);
 
         List<Map<String, Object>> result =
                 rawSqlMapper.rawSelect("select order_id,user_id,real_amount from "
                         + orderType.getTableName() + " where order_id =" + outTradeNo);
 
-        if (result.size() == 0)
+        if (result.size() == 0) {
             throw new MyPaymentException("无效订单");
+        }
         return JSONObject.parseObject(JSON.toJSONString(result.get(0)), BaseOrder.class);
 
 
@@ -68,6 +68,7 @@ public class BasePayAopImpl implements IBasePayAop {
      * @param userId  某个用户id
      * @param message 消息
      */
+    @Override
     public void wsSendMessage(String userId, String message) {
         websocketService.pushMessage(userId, message);
     }
@@ -78,6 +79,7 @@ public class BasePayAopImpl implements IBasePayAop {
      * @param topic   主题
      * @param message 消息
      */
+    @Override
     public void wsBroadcast(String topic, String message) {
         websocketService.multiCast(topic, message);
     }
@@ -92,8 +94,9 @@ public class BasePayAopImpl implements IBasePayAop {
         if (o == null) {
             List<Map<String, Object>> res
                     = rawSqlMapper.rawSelect("select * from pay_config where config_type = '" + payConfig + "'");
-            if (res.size() == 0)
+            if (res.size() == 0) {
                 return null;
+            }
             String jsonString = JSON.toJSONString(res.get(0)).replace("\\", "").replace("\"{", "{").replace("}\"", "}");
             E config = JSON.parseObject(jsonString, clazz);
             payRedisUtil.set("payConfig:" + payConfig, config);

@@ -24,9 +24,9 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent evt) {
-        log.info("系统启动完成 ==> {}", evt.getSource());
+        log.info("系统启动完成 ==>");
         setOrderType();
-        log.info("注入交易订单类型 ==> {}", OrderTypeImporter.getMap());
+        log.info("注入交易订单类型 ==> {}", OrderTypeImporter.getMAP());
         //自动取消订单
         delayService.start(new DelayService.OnDelayedListener() {
             @Override

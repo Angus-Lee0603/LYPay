@@ -6,6 +6,10 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Administrator
+ */
+
 public enum OrderFrom {
 
     WX_MINI_PROGRAM("小程序", 1),

@@ -13,6 +13,9 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 
+/**
+ * @author Administrator
+ */
 @Target({TYPE, FIELD})
 @Retention(RUNTIME)
 @Constraint(validatedBy = NotALLEmptyValidator.class)

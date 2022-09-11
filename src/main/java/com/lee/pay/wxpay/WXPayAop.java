@@ -82,8 +82,9 @@ public class WXPayAop extends BasePayAopImpl {
         AbstractOrderType orderType = (AbstractOrderType) args[3];
 
         String openId = "";
-        if (args.length == 5)
+        if (args.length == 5) {
             openId = (String) args[4];
+        }
 
         //获取注解属性值
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
@@ -349,8 +350,9 @@ public class WXPayAop extends BasePayAopImpl {
 
     private void setOrUpdate(AbstractOrderType orderType) {
         WXPayConfig config = getPayConfig(WXPayConfig.class);
-        if (config == null)
+        if (config == null) {
             throw new MyPaymentException("商家微信账户参数未配置");
+        }
         this.appId = config.getAppId();
         this.mchId = config.getMchId();
         this.apiKey = config.getApiKey();

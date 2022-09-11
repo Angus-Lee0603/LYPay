@@ -4,6 +4,10 @@ import com.lee.pay.alipay.AliPayConfig;
 import com.lee.pay.ccbpay.CCBPayConfig;
 import com.lee.pay.wxpay.entity.WXPayConfig;
 
+/**
+ * @author Administrator
+ */
+
 public enum PayMethod {
 
 

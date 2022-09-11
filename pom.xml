@@ -65,6 +65,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!--连接池-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+
         <!--mp-->
         <dependency>
             <groupId>com.baomidou</groupId>

@@ -12,6 +12,11 @@ public interface IBasePayAop {
 
     void wsSendMessage(String userId, String message);
 
+    /**
+     * ws 广播
+     * @param topic 主题
+     * @param message 消息
+     */
     void wsBroadcast(String topic, String message);
 
     <E> E getPayConfig(Class<E> clazz);

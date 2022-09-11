@@ -10,6 +10,9 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+/**
+ * @author Administrator
+ */
 @Data
 @Builder
 @EqualsAndHashCode(callSuper = false)

@@ -115,7 +115,8 @@ public class CCBPayAop extends BasePayAopImpl {
         String ret = HttpClientUtil.doPost(bankURL, map);    //请求二维码生成链接串
         System.out.println("ret::" + ret);
         QrURL qrURL = JSON.parseObject(ret, QrURL.class);
-        ret = HttpClientUtil.doGet(qrURL.getPAYURL(), "UTF-8"); //获取二维码串
+        //获取二维码串
+        ret = HttpClientUtil.doGet(qrURL.getPAYURL(), "UTF-8");
 
         QrURL qr = JSON.parseObject(ret, QrURL.class);
         String decodeUrl = "";
@@ -218,8 +219,9 @@ public class CCBPayAop extends BasePayAopImpl {
 
     private void setOrUpdate() {
         CCBPayConfig config = getPayConfig(CCBPayConfig.class);
-        if (config == null)
+        if (config == null) {
             throw new MyPaymentException("商家账户参数未配置");
+        }
         this.merchantId = config.getMerchantId();
         this.posId = config.getPosId();
         this.branchId = config.getBranchId();

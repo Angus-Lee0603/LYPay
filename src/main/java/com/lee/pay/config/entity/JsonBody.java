@@ -14,7 +14,7 @@ public class JsonBody {
     private PayMethod payMethod;
 
     @ApiModelProperty(value = "参数配置")
-    @NotAllEmpty(fields = {"ebsHost"},fieldsGroup = {"certFilePath", "certFilePassword", "configFilePath"},
+    @NotAllEmpty(fields = {"ebsHost"}, fieldsGroup = {"certFilePath", "certFilePassword", "configFilePath"},
             message = "ebsHost 和 [certFilePath，certFilePassword，configFilePath] 不能同时为空")
     private PayConfig payConfig;
 
