@@ -55,7 +55,7 @@ public class TestOrderServiceImpl extends ServiceImpl<TestOrderMapper, TestOrder
             TestOrderServiceImpl.this.save(order);
 
             //构建 itrOrderId
-            String itrOrderId = "order:" + OrderType.forValue(orderType.code).name + ":" + outTradeNo;
+            String itrOrderId = OrderType.forValue(orderType.code).name + ":" + outTradeNo;
 
             //允许挂单，几分钟内未付费则取消
             orderUtil.pendingOrderToDelay(itrOrderId, order, orderType.pendingTime);

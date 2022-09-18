@@ -44,10 +44,10 @@ public class PayConfigServiceImpl extends ServiceImpl<PayConfigMapper, PayConfig
                 if (StringUtils.isNotBlank(ccbPayConfig.getCertFilePassword())) {
                     ccbPayConfig.setCertFilePassword(ccbPayConfig.getCertFilePassword());
                 }
-                ccbPayConfig.setOperatorPassword(AESUtil.AESEncode(config.getOperatorPassword()));
+                ccbPayConfig.setOperatorPassword(AESUtil.aesEncode(config.getOperatorPassword()));
                 o = ccbPayConfig;
-                config.setOperatorPassword(AESUtil.AESEncode(config.getOperatorPassword()));
-                config.setCertFilePassword(AESUtil.AESEncode(ccbPayConfig.getCertFilePassword()));
+                config.setOperatorPassword(AESUtil.aesEncode(config.getOperatorPassword()));
+                config.setCertFilePassword(AESUtil.aesEncode(ccbPayConfig.getCertFilePassword()));
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + method);

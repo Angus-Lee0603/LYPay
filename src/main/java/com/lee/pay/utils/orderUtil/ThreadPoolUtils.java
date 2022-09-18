@@ -4,6 +4,9 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import java.util.concurrent.*;
 
+/**
+ * @author Administrator
+ */
 public class ThreadPoolUtils {
  
     private final ExecutorService executor;

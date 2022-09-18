@@ -16,6 +16,9 @@ import java.util.Random;
 import java.util.UUID;
 
 
+/**
+ * @author Administrator
+ */
 @Slf4j
 @Component
 public class OrderUtil {
@@ -97,13 +100,16 @@ public class OrderUtil {
                 case 2:
                     charOrNum = "num";
                     break;
+                default:
+                    throw new RuntimeException("unexpected option");
 
             }  // 输出字母还是数字
             // 字符串
             if ("char".equalsIgnoreCase(charOrNum)) {
-                int choice = random.nextInt(2) % 2 == 0 ? 65 : 97; // 取得大写字母还是小写字母
+                // 取得大写字母还是小写字母
+                int choice = random.nextInt(2) % 2 == 0 ? 65 : 97;
                 val.append((char) (choice + random.nextInt(26)));
-            } else if ("num".equalsIgnoreCase(charOrNum)) {
+            } else {
                 val.append(random.nextInt(10));
             }
         }

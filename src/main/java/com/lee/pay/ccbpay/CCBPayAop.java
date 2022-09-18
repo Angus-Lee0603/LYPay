@@ -230,7 +230,7 @@ public class CCBPayAop extends BasePayAopImpl {
         this.pubKey30 = pubKey.substring(pubKey.length() - 30);
         this.operator = config.getOperator();
         //对密码进行解密赋值
-        this.operatorPassword = AESUtil.AESDecode(config.getOperatorPassword());
+        this.operatorPassword = AESUtil.aesDecode(config.getOperatorPassword());
         String ebsHost = config.getEbsHost();
         if (StringUtils.isNotBlank(ebsHost)) {
             this.ebsIp = ebsHost.substring(0, ebsHost.indexOf(":"));
@@ -242,7 +242,7 @@ public class CCBPayAop extends BasePayAopImpl {
         if (StringUtils.isNotBlank(certFilePath) && StringUtils.isNotBlank(certFilePassword)
                 && StringUtils.isNotBlank(configFilePath)) {
             this.certFilePath = certFilePath;
-            this.certFilePassword = AESUtil.AESDecode(certFilePassword);
+            this.certFilePassword = AESUtil.aesDecode(certFilePassword);
             this.configFilePath = configFilePath;
         }
 

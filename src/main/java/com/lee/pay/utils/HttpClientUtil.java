@@ -29,7 +29,7 @@ import java.util.Map;
 @Slf4j
 public class HttpClientUtil {
 
-    private static final RequestConfig requestConfig;
+    private static final RequestConfig REQUEST_CONFIG;
     private static final int MAX_TIMEOUT = 7000;
 
     static {
@@ -47,9 +47,7 @@ public class HttpClientUtil {
         configBuilder.setSocketTimeout(MAX_TIMEOUT);
         // 设置从连接池获取连接实例的超时
         configBuilder.setConnectionRequestTimeout(MAX_TIMEOUT);
-        // 在提交请求之前 测试连接是否可用
-//        configBuilder.setStaleConnectionCheckEnabled(true);
-        requestConfig = configBuilder.build();
+        REQUEST_CONFIG = configBuilder.build();
     }
 
 
@@ -69,15 +67,16 @@ public class HttpClientUtil {
         CloseableHttpResponse response = null;
 
         try {
-            httpPost.setConfig(requestConfig);
-            StringEntity stringEntity = new StringEntity(json.toString(), "UTF-8");//解决中文乱码问题
+            httpPost.setConfig(REQUEST_CONFIG);
+            //解决中文乱码问题
+            StringEntity stringEntity = new StringEntity(json.toString(), "UTF-8");
             stringEntity.setContentEncoding("UTF-8");
             stringEntity.setContentType("application/json");
             httpPost.setEntity(stringEntity);
             httpPost.setHeader("Accept", "application/json");
             response = httpClient.execute(httpPost);
             HttpEntity entity = response.getEntity();
-            log.info("status is {}, response body is {}", response.getStatusLine(), entity);
+            log.info("status is {}", response.getStatusLine());
             httpStr = EntityUtils.toString(entity, "UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
@@ -117,12 +116,12 @@ public class HttpClientUtil {
         try {
             // 设置响应头信息，发送post请求
             HttpPost httpPost = new HttpPost(url);
-            RequestConfig requestConfig = RequestConfig.custom()
+            RequestConfig REQUEST_CONFIG = RequestConfig.custom()
                     .setSocketTimeout(5000)
                     .setConnectTimeout(5000)
                     .setConnectionRequestTimeout(5000)
                     .build();
-            httpPost.setConfig(requestConfig);
+            httpPost.setConfig(REQUEST_CONFIG);
             httpPost.setEntity(new StringEntity(obj, "UTF-8"));
             httpPost.setHeader("Accept", "*/*");
             httpPost.setHeader("Content-type", "application/xml");
@@ -148,7 +147,13 @@ public class HttpClientUtil {
         return httpStr;
     }
 
-    //ccb
+    /**
+     * ccb
+     *
+     * @param url      url
+     * @param paramMap 参数
+     * @return 结果
+     */
     public static String doPost(String url, Map<?, ?> paramMap) {
 
         return doPost(url, paramMap, "UTF-8");
@@ -159,14 +164,14 @@ public class HttpClientUtil {
         System.out.println("GetPage:" + url);
         String content = null;
         if (url == null || url.trim().length() == 0 || paramMap == null
-                || paramMap.isEmpty())
+                || paramMap.isEmpty()) {
             return null;
+        }
         HttpClient httpClient = new HttpClient();
         httpClient.getParams().setParameter(
                 HttpMethodParams.USER_AGENT,
                 "Mozilla/5.0 (X11; U; Linux i686; zh-CN; rv:1.9.1.2) Gecko/20090803 Fedora/3.5.2-2.fc11 Firefox/3.5.2");
 
-        //httpClient.getHostConfiguration().setProxy("128.128.176.74", 808);
 
         PostMethod method = new PostMethod(url);
 
