@@ -12,7 +12,7 @@ spring:
       initial-size: 1       #初始化连接池大小
       min-idle: 1           #最小连接数
       max-active: 60        #最大连接数
-      max-lifetime: 60000
+      max-lifetime: 30000
   redis:
     host: 119.3.235.38
     port: 7379
