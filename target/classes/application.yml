@@ -1,0 +1,42 @@
+server:
+  servlet:
+    context-path: /pay
+  port: 8086
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://119.3.235.38:3307/pay?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root1234
+#    druid: #druid 连接池配置
+#      initial-size: 1       #初始化连接池大小
+#      min-idle: 1           #最小连接数
+#      max-active: 60        #最大连接数
+#      max-lifetime: 30000
+  redis:
+    host: 119.3.235.38
+    port: 7379
+    password: root@lee@redis
+
+mybatis-plus:
+  mapper-locations: classpath*:/com/lee/pay/config/mapper/xml/*.xml,classpath*:/com/lee/pay/utils/crud/mapper/xml/*.xml,classpath*:/com/lee/project/*.xml
+  type-handlers-package: com.lee.pay.config
+  global-config:
+    db-config:
+      logic-delete-field: flag    # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: 1       # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0   # 逻辑未删除值(默认为 0)
+
+
+knife4j:
+  enable: true
+#  production: true
+pay:
+  swagger:
+    enable: true
+
+
+
+logging:
+  level:
+    com.lee: trace
