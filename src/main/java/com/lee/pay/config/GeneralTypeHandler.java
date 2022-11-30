@@ -9,6 +9,9 @@ import org.apache.ibatis.type.MappedTypes;
 
 import java.sql.*;
 
+/**
+ * @author Administrator
+ */
 @MappedTypes(value = {JSONObject.class, Date.class})
 @MappedJdbcTypes(value = {JdbcType.VARCHAR, JdbcType.BLOB}, includeNullJdbcType = true)
 public class GeneralTypeHandler<T> extends BaseTypeHandler<T> {
@@ -16,7 +19,9 @@ public class GeneralTypeHandler<T> extends BaseTypeHandler<T> {
     private final Class<T> clazz;
 
     public GeneralTypeHandler(Class<T> clazz) {
-        if (clazz == null) throw new IllegalArgumentException("Argument cannot be null !");
+        if (clazz == null) {
+            throw new IllegalArgumentException("Argument cannot be null !");
+        }
         this.clazz = clazz;
     }
 

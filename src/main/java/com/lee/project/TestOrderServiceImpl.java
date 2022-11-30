@@ -44,7 +44,14 @@ public class TestOrderServiceImpl extends ServiceImpl<TestOrderMapper, TestOrder
         protected Map<String, String> payOrderAction(PayMethod method, Integer orderFrom, String outTradeNo,
                                                      String orderSubject, String totalAmount,
                                                      String userId, String redirectUrl, OrderType orderType) {
+            switch (method) {
+                case WX_PAY:
+                case ALI_PAY:
+                    break;
+                default:
+                    throw new MyPaymentException("暂不支持此支付方式");
 
+            }
             //创建订单
             TestOrder order = TestOrder.builder()
                     .orderId(outTradeNo)
@@ -55,7 +62,7 @@ public class TestOrderServiceImpl extends ServiceImpl<TestOrderMapper, TestOrder
             TestOrderServiceImpl.this.save(order);
 
             //构建 itrOrderId
-            String itrOrderId = OrderType.forValue(orderType.code).name + ":" + outTradeNo;
+            String itrOrderId = "ORDER:" + OrderType.forValue(orderType.code).name + ":" + outTradeNo;
 
             //允许挂单，几分钟内未付费则取消
             orderUtil.pendingOrderToDelay(itrOrderId, order, orderType.pendingTime);

@@ -112,34 +112,35 @@ public class PayRedisUtil {
         return Boolean.TRUE.equals(redisTemplate.hasKey(k));
     }
 
-    public void setHash(String redisKey,String hashKey,String hashValue){
+    public void setHash(String redisKey, String hashKey, String hashValue) {
         redisTemplate.opsForHash().put(redisKey, hashKey, hashValue);
     }
 
-    public Boolean setBitMap(String bitKey, Integer bitOffset){
-        return redisTemplate.opsForValue().setBit(bitKey,bitOffset,true);
+    public Boolean setBitMap(String bitKey, Integer bitOffset) {
+        return redisTemplate.opsForValue().setBit(bitKey, bitOffset, true);
     }
 
-    public Boolean getBitMap(String bitKey,Integer bitOffset){
-        return redisTemplate.opsForValue().getBit(bitKey,bitOffset);
+    public Boolean getBitMap(String bitKey, Integer bitOffset) {
+        return redisTemplate.opsForValue().getBit(bitKey, bitOffset);
     }
 
-   private final String redisLockKey = "lock";
+    private final String redisLockKey = "lock";
 
     /**
      * 简单的分布式锁，时间为一分钟
-     *      仅用于控制业务执行的并发度
-     * @param key 加锁的 key
+     * 仅用于控制业务执行的并发度
+     *
+     * @param key    加锁的 key
      * @param expire 锁过期的时间（秒）
      * @return redis 锁的 token，用于释放锁时进行判断
-     *  如果为null，则表示没有获取到锁，即要加锁的 key 在 redis中被其它线程或这服务占有
+     * 如果为null，则表示没有获取到锁，即要加锁的 key 在 redis中被其它线程或这服务占有
      */
-    public String getEasyLock(String key,int expire){
-        String lockKey = String.format("%s:%s",redisLockKey,key);
+    public String getEasyLock(String key, int expire) {
+        String lockKey = String.format("%s:%s", redisLockKey, key);
         String clintId = UUID.randomUUID().toString();
         // 设置 redis 锁
-        Boolean result = redisTemplate.opsForValue().setIfAbsent(lockKey,clintId,expire, TimeUnit.SECONDS);
-        if(result){
+        Boolean result = redisTemplate.opsForValue().setIfAbsent(lockKey, clintId, expire, TimeUnit.SECONDS);
+        if (result) {
             return clintId;
         }
         return null;
@@ -149,19 +150,23 @@ public class PayRedisUtil {
      * @param key
      * @param redisLockToken
      */
-    public void releaseLock(String key,String redisLockToken){
-        String lockKey = String.format("%s:%s",redisLockKey,key);
-        if(redisLockToken.equals(redisTemplate.opsForValue().get(lockKey))){
+    public void releaseLock(String key, String redisLockToken) {
+        String lockKey = String.format("%s:%s", redisLockKey, key);
+        if (redisLockToken.equals(redisTemplate.opsForValue().get(lockKey))) {
             redisTemplate.delete(lockKey);
         }
     }
 
-    public Long getTTL(String key){
-        return redisTemplate.getExpire(key,TimeUnit.SECONDS);
+    public Long getTTL(String key) {
+        return redisTemplate.getExpire(key, TimeUnit.SECONDS);
     }
 
-    public void setTTL(String key,long ttl){
-        redisTemplate.expire(key,ttl,TimeUnit.SECONDS);
+    public void setTTL(String key, long ttl) {
+        redisTemplate.expire(key, ttl, TimeUnit.SECONDS);
+    }
+
+    public Boolean setIfAbsent(String key, Integer intervalTime) {
+        return redisTemplate.opsForValue().setIfAbsent(key, 1, intervalTime, TimeUnit.SECONDS);
     }
 
 }

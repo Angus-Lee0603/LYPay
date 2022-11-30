@@ -82,7 +82,7 @@ public class OrderRedisServiceImpl implements OrderRedisService {
             @Override
             public Set<String> doInRedis(RedisConnection connection) throws DataAccessException {
                 Set<String> binaryKeys = new HashSet<>();
-                Cursor<byte[]> cursor = connection.scan(new ScanOptions.ScanOptionsBuilder().match("order*").count(100).build());
+                Cursor<byte[]> cursor = connection.scan(new ScanOptions.ScanOptionsBuilder().match("ORDER*").count(100).build());
                 while (cursor.hasNext()) {
                     binaryKeys.add(new String(cursor.next()));
                 }

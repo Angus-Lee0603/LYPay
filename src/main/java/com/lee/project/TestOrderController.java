@@ -1,6 +1,7 @@
 package com.lee.project;
 
 
+import com.lee.pay.annotaion.AvoidRepeatRequest;
 import com.lee.pay.entity.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,8 +26,13 @@ public class TestOrderController {
 
     @PostMapping("/create")
     @ApiOperation("创建订单")
+    @AvoidRepeatRequest(intervalTime = 4)
     public ResponseResult<?> create(@RequestBody BasePayParams payParams) {
-        return new ResponseResult<>().success(testOrderService.invokeOrderPay(payParams));
+        try {
+            return new ResponseResult<>().success(testOrderService.invokeOrderPay(payParams));
+        } catch (Exception e) {
+         return new ResponseResult<>().error(e.getMessage());
+        }
     }
 
     @RequestMapping("/wx/callback")

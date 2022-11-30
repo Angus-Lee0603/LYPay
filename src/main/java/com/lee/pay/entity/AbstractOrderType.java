@@ -7,9 +7,14 @@ import lombok.Getter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @description TODO
+ * @author lee yee91300@gmail.com
+ * @create 2022/9/30 23:21
+ */
 public class AbstractOrderType extends BaseEnum {
  
-	private static final Map<String, AbstractOrderType> nameEnumMap = new ConcurrentHashMap<>();
+	private static final Map<String, AbstractOrderType> NAME_ENUM_MAP = new ConcurrentHashMap<>();
 	@Getter
 	public final int code;
 	@Getter
@@ -22,8 +27,8 @@ public class AbstractOrderType extends BaseEnum {
 		this.code = code;
 		this.value = value;
 		this.tableName = tableName;
-		if (!nameEnumMap.containsKey(name)) {
-			nameEnumMap.put(name, this);
+		if (!NAME_ENUM_MAP.containsKey(name)) {
+			NAME_ENUM_MAP.put(name, this);
 		}
 	}
 
